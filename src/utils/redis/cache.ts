@@ -1,4 +1,3 @@
-'server-only'
 /* CONSTANTS */
 import { DAY_IN_SECONDS } from '@common/constants/datetime'
 /* Models */
@@ -47,7 +46,7 @@ export const setCache = async (data: string, key: string, ttl: number = DAY_IN_S
         .connect()
         .catch((e) => {
             Logger.error(
-                `🤬 Redis.createClient() failed to connect from setCache ${process.env.REDIS_ENDPOINT}, ${e.message}`,
+                `Redis.createClient() failed to connect from setCache ${process.env.REDIS_ENDPOINT}, ${e.message}`,
             )
             throw e
         })
@@ -62,7 +61,42 @@ export const setCache = async (data: string, key: string, ttl: number = DAY_IN_S
             NX: true,
         })
         .catch((e) => {
-            Logger.error(`🤬 Redis.set() failed: ${JSON.stringify(e)}`)
+            Logger.error(`Redis.set() failed: ${JSON.stringify(e)}`)
         })
     redis.destroy()
+}
+
+/**
+ * Get from Redis cache
+ *
+ * @param {string} key
+ * @returns {Promise<T>}
+ */
+export const getCache = async (key: string): Promise<string> => {
+    const redis = await createClient({
+        url: `redis://${process.env.REDIS_ENDPOINT}`,
+    })
+        .connect()
+        .catch((e) => {
+            Logger.error(
+                `Redis.createClient() failed to connect from setCache ${process.env.REDIS_ENDPOINT}, ${e.message}`,
+            )
+            throw e
+        })
+
+    if (!redis || !redis.isReady) {
+        throw new Error('Redis is not ready')
+    }
+
+    return await redis
+        .get(`@next-${key}`)
+        .then((result) => {
+            if (!result) throw new Error('Redis cache get failed.')
+            redis.destroy()
+            return result
+        })
+        .catch((e) => {
+            Logger.error(`Redis.get() failed: ${JSON.stringify(e)}`)
+            throw e
+        })
 }

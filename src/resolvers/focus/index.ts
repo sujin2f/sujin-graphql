@@ -1,5 +1,5 @@
 /* Utils */
-import { getBookmarks } from './getBookmarks'
+import { getBookmarks, getBookmarks2 } from './getBookmarks'
 import { getFocusCloudItems } from './getFocusCloudItems'
 import { createBookmark } from './createBookmark'
 import { removeBookmark } from './removeBookmark'
@@ -15,6 +15,7 @@ import type { T_Focus_Message } from '@common/types'
 export const focus = {
     Query: {
         focusBookmarks: async (_: unknown, __: unknown, context: T_Context) => await getBookmarks(context.token),
+        focusBookmarks2: async (_: unknown, __: unknown, context: T_Context) => await getBookmarks2(context.token),
         focusCloudItems: async (_: unknown, __: unknown, context: T_Context) => await getFocusCloudItems(context.token),
     },
     Mutation: {

@@ -1,6 +1,7 @@
 type Query {
     focusBookmarks: [FocusMessage]
     focusCloudItems: [FocusMessage]
+    focusBookmarks2: [FocusBookmark]
 }
 type Mutation {
     createFocusBookmark(message: FocusMessageInput!): String
@@ -8,6 +9,16 @@ type Mutation {
 
     createFocusCloudItem(message: FocusCloudItemInput!): String
     removeFocusCloudItem(id: String!): String
+}
+
+type FocusBookmark {
+    _id: String
+    title: String
+    url: String
+    shortcut: String
+    parent: String
+    dir: Boolean
+    order: Int
 }
 
 type FocusMessage {

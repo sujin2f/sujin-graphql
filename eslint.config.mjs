@@ -9,6 +9,10 @@ export default defineConfig(eslint.configs.recommended, tseslint.configs.recomme
             ...globals.es2021,
             ...globals.node,
         },
+        parserOptions: {
+            projectService: true,
+            tsconfigRootDir: __dirname,
+        },
     },
     rules: {
         'no-console': 'error',

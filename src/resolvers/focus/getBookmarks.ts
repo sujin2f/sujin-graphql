@@ -1,14 +1,14 @@
 import { Types } from 'mongoose'
 /* Models */
-import { Focus } from '@src/schema/focus'
+import { Focus, FocusBookmark } from '@src/schema/focus'
 import { Logger } from '@common/model/Logger'
 /* T_Types */
-import type { T_Focus_Message } from '@common/types'
+import type { T_Bookmark, T_Focus_Message } from '@common/types'
 /* CONSTANTS */
 import { HOUR_IN_MS, MINUTE_IN_SECONDS } from '@common/constants/datetime'
 /* Utils */
 import { verifyAccessToken } from '@src/utils/security'
-import { setCache } from '@src/utils/redis/cache'
+import { getCache, setCache } from '@src/utils/redis/cache'
 import { COLLECTION } from '@common/constants'
 
 /**
@@ -47,6 +47,26 @@ export const getBookmarks = async (token: string): Promise<T_Focus_Message[]> =>
         })
         .catch((e) => {
             Logger.error('getBookmarks() failed', user.email, e.message)
+            setCache(JSON.stringify([]), `${COLLECTION.BOOKMARK}-${user.email}`, 30 * MINUTE_IN_SECONDS)
+            return []
+        })
+}
+
+export const getBookmarks2 = async (token: string): Promise<T_Bookmark[]> => {
+    const user = await verifyAccessToken(token)
+    const key = `${COLLECTION.BOOKMARK}2-${user.email}`
+
+    const bookmarks = await getCache(key).catch(() => '')
+    if (bookmarks) return JSON.parse(bookmarks) as T_Bookmark[]
+
+    return await FocusBookmark.find({ user: new Types.ObjectId(user._id), type: 'bookmark' })
+        .then(async (result) => {
+            Logger.log('getBookmarks2() attempted', result.length)
+            setCache(JSON.stringify(result), `${COLLECTION.BOOKMARK}2-${user.email}`, 30 * MINUTE_IN_SECONDS)
+            return result
+        })
+        .catch((e) => {
+            Logger.error('getBookmarks2() failed', user.email, e.message)
             setCache(JSON.stringify([]), `${COLLECTION.BOOKMARK}-${user.email}`, 30 * MINUTE_IN_SECONDS)
             return []
         })

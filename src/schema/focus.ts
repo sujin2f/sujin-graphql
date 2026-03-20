@@ -90,7 +90,6 @@ const focusBookmarkSchema = new Schema<T_Bookmark & { user: ObjectId }>({
         required: true,
     },
     url: String,
-    id: String,
     shortcut: String,
     parent: String,
     dir: Boolean,
