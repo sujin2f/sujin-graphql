@@ -9,6 +9,7 @@ import { AGGREGATE_ARCHIVE_POST, AGGREGATE_EXPAND_ARCHIVES } from '@src/constant
 import { verifyAccessToken, verifyAdmin } from '@src/utils/security'
 /* T_Types */
 import type { T_Post } from '@common/types'
+import type { Response } from '@src/types'
 
 /**
  * Return a paginated list of posts for admin interfaces.
@@ -21,7 +22,8 @@ import type { T_Post } from '@common/types'
  * @returns A page of `T_Post` documents.
  * @throws {GraphQLError} When no posts are found.
  */
-export const postsAllAdmin = async (_page: number, token: string): Promise<T_Post[]> => {
+export const postsAllAdmin = async (_page: number, token: string, res: Response): Promise<T_Post[]> => {
+    Logger.log(`postsAllAdmin query start`)
     const user = await verifyAccessToken(token)
     await verifyAdmin(user.email)
 
@@ -34,6 +36,9 @@ export const postsAllAdmin = async (_page: number, token: string): Promise<T_Pos
         ...AGGREGATE_EXPAND_ARCHIVES,
         ...AGGREGATE_ARCHIVE_POST,
     ])
-    Logger.info(`🤞 postsAllAdmin query done`)
+
+    const total = await Post.countDocuments()
+    res.setHeader('total-pages', Math.ceil(total / PER_PAGE))
+    Logger.log(`postsAllAdmin query done`)
     return result
 }

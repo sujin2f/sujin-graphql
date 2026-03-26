@@ -1,6 +1,7 @@
 type Query {
     focusDevices(page: Int!): [FocusDevice]
     pages(page: Int!): [Page]
+    postsAllAdmin(page: Int!): [Post]
 }
 
 type Mutation {

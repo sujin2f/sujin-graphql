@@ -22,6 +22,12 @@ export const getPost = async (slug: string) => {
             throw new Error(`🤬 Failed to request REST post-slug -- ${requestURL}`)
         }
         const json = (await response.json()) as T_RestPost[]
+
+        if (!json || !json.length) {
+            Logger.error('Cannot find the post', slug)
+            return undefined
+        }
+
         const post = {
             title: json[0].title.rendered,
             link: json[0].link,

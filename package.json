@@ -71,6 +71,7 @@
         "moduleNameMapper": {
             "^@test/(.*)$": "<rootDir>/.jest/$1",
             "^@src/(.*)$": "<rootDir>/src/$1",
+            "^@worker/(.*)$": "<rootDir>/worker/$1",
             "^@common/(.*)$": "<rootDir>/common/src/$1"
         },
         "extensionsToTreatAsEsm": [

@@ -1,14 +1,9 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable */
 
-import { updatePost } from '@src/utils/redis/actions/updatePost'
 import { IS_DEV } from '@common/constants/helper'
 
 export const test = async () => {
     if (!IS_DEV) {
         throw new Error('invalid access')
     }
-
-    const result = await updatePost('focus')
-    console.log(result)
 }

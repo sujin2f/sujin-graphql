@@ -12,9 +12,10 @@
         "paths": {
             "@test/*": ["./.jest/*"],
             "@src/*": ["./src/*"],
+            "@worker/*": ["./worker/*"],
             "@common/*": ["./common/src/*"]
         }
     },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "./common/**/*"]
+    "include": ["src/**/*.ts", "worker/**/*.ts", ".jest/**/*.ts"],
+    "exclude": ["node_modules", "common/**/*"]
 }

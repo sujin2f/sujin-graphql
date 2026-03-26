@@ -10,6 +10,8 @@ import { getPost } from '@src/utils/wordpress/post'
  */
 export const updatePost = async (slug: string): Promise<void> => {
     const wpPost = await getPost(slug)
+    if (!wpPost) return
+
     await Post.findOne({ slug }).then(async (post) => {
         if (post) {
             await Post.updateOne({ slug }, wpPost)

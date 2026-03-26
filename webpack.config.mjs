@@ -9,7 +9,8 @@ const config = {
     target: 'node',
     entry: {
         bundle: './src/server.ts',
-        subscriber: './src/utils/redis/subscriber.ts',
+        subscriber: './worker/subscriber.ts',
+        child: './worker/child-process.ts',
     },
     externals: [nodeExternals()],
     module: {
@@ -30,6 +31,7 @@ const config = {
         extensions: ['.ts', '.js'],
         alias: {
             '@src': path.resolve(import.meta.dirname, 'src'),
+            '@worker': path.resolve(import.meta.dirname, 'worker'),
             '@common': path.resolve(import.meta.dirname, 'common', 'src'),
         },
     },
@@ -52,8 +54,7 @@ const config = {
 if (process.env.NODE_ENV === 'development') {
     config.devServer = {
         compress: true,
-        watchFiles: ['src/**/*', 'common/**/*'],
-
+        watchFiles: ['src/**/*', 'worker/**/*', 'common/**/*'],
         port: 4000,
         hot: true, // Enable Hot Module Replacement
     }

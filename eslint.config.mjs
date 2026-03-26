@@ -15,7 +15,9 @@ export default defineConfig(eslint.configs.recommended, tseslint.configs.recomme
             ...globals.node,
         },
         parserOptions: {
-            projectService: true,
+            projectService: {
+                allowDefaultProject: ['*.js', '*.mjs'],
+            },
             tsconfigRootDir: __dirname,
         },
     },
