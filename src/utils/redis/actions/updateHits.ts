@@ -12,16 +12,17 @@ import { ARCHIVE } from '@common/constants'
  * @returns An empty array (placeholder) once the mutation completes.
  */
 export const updateHits = async (slugs: string[]) => {
+    Logger.info(`Update Hits`, slugs)
     const promises = slugs
         .filter((slug) => slug)
         .map((slug) => sanitize(slug))
         .map((slug) =>
             Archive.updateOne({ slug, type: ARCHIVE.TAG }, { $inc: { hits: 1 } })
                 .then(() => {
-                    Logger.info(`⭐️ Update Hits fulfilled! ${slug}`)
+                    Logger.info(`Update Hits fulfilled! ${slug}`)
                 })
                 .catch((e) => {
-                    Logger.error(`🤬 Update Hits failed! ${slug}, ${JSON.stringify(e)}`)
+                    Logger.error(`Update Hits failed! ${slug}, ${JSON.stringify(e)}`)
                 }),
         )
 

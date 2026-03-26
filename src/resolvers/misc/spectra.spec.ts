@@ -5,7 +5,7 @@ import { SpectraMock } from '@test/mocks/GQL-model'
 jest.doMock('@src/schema/spectra', () => SpectraMock)
 import { Spectra } from '@src/schema/spectra'
 // Mock Logger
-import LoggerMock from '@test/mocks/utils/logger'
+import LoggerMock from '@test-common/mock.logger'
 jest.doMock('@common/model/Logger', () => LoggerMock)
 // Mock Redis
 import { redis } from '@test/mocks/redis'

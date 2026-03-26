@@ -35,10 +35,10 @@ const CRYPTO_KEY = `${process.env.CRYPTO_KEY}`
  * @throws {Error} When the incoming token is missing or invalid.
  */
 export const login = async (googleUser: T_GoogleUser, token: string, res: Response): Promise<boolean> => {
-    Logger.info(`🤞 login has been finished`)
+    Logger.info(`login executed`, googleUser.email)
     const email = sanitize(googleUser.email)
     if (!email) {
-        Logger.error('🤬 Login: email is empty')
+        Logger.error('Login: email is empty')
         throw new Error('🤬 Login: email is empty')
     }
 
@@ -49,12 +49,12 @@ export const login = async (googleUser: T_GoogleUser, token: string, res: Respon
     }
 
     const hashed = createHash(email, EMAIL_SECRET)
-    const _id = await User.findOne<T_User>({ email: hashed }).then(async (result) => {
+    const _id = await User.findOne({ email: hashed }).then(async (result) => {
         if (result) {
             return result._id.toString()
         }
         // Create a new user
-        const user = await User.insertOne<T_User>({ email: hashed })
+        const user = await User.insertOne({ email: hashed })
         return user._id.toString()
     })
 
@@ -64,6 +64,7 @@ export const login = async (googleUser: T_GoogleUser, token: string, res: Respon
 
     const mongoUser: T_User = {
         _id,
+        email,
         admin,
     }
 
@@ -89,6 +90,6 @@ export const login = async (googleUser: T_GoogleUser, token: string, res: Respon
 
     res.setHeader(HEADER_TOKEN, `Bearer ${commToken}`)
 
-    Logger.info(`🤞 login has been finished: ${JSON.stringify(mongoUser)}`)
+    Logger.info(`login() has been finished: ${JSON.stringify(mongoUser)}`)
     return true
 }

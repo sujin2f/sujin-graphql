@@ -1,5 +1,8 @@
 import type { Response as expressResponse } from 'express'
 
+/**
+ * @deprecated
+ */
 export type Context = {
     token: string
 }
@@ -10,3 +13,13 @@ export type T_Context = {
     token: string
     res: Response
 }
+
+export type T_WorkerChannels = 'test'
+
+export type T_WorkerData<T extends T_WorkerChannels> = T extends 'test'
+    ? {
+          type: T
+          _id: string
+          token: string
+      }
+    : { id: number }

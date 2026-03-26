@@ -1,6 +1,6 @@
 {
     "name": "sujin-graphql-api",
-    "version": "12.2.6",
+    "version": "1.0.1-beta.1",
     "description": "GraphQL API for sujinc.com with WP DB and additional MongoDB dataset",
     "main": "src/server.ts",
     "scripts": {
@@ -71,7 +71,9 @@
         "moduleNameMapper": {
             "^@test/(.*)$": "<rootDir>/.jest/$1",
             "^@src/(.*)$": "<rootDir>/src/$1",
-            "^@common/(.*)$": "<rootDir>/common/src/$1"
+            "^@worker/(.*)$": "<rootDir>/worker/$1",
+            "^@common/(.*)$": "<rootDir>/common/src/$1",
+            "^@test-common/(.*)$": "<rootDir>/common/.jest/$1"
         },
         "extensionsToTreatAsEsm": [
             ".ts"

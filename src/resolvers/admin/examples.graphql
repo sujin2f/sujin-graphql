@@ -10,4 +10,8 @@ query {
     page(slug: "about") {
         title
     }
+
+    postsAllAdmin(page: 1) {
+        title
+    }
 }

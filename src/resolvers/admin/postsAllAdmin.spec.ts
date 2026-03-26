@@ -2,6 +2,8 @@
  * yarn test postsAllAdmin.spec.ts
  */
 
+import type { Response } from '@src/types'
+
 // Mock Post model
 import { PostMock } from '@test/mocks/GQL-model'
 jest.doMock('@src/schema/post', () => PostMock)
@@ -11,10 +13,10 @@ import SecurityMock from '@test/mocks/utils/security'
 jest.doMock('@src/utils/security', () => SecurityMock)
 import { verifyAccessToken } from '@src/utils/security'
 // Mock Logger
-import LoggerMock from '@test/mocks/utils/logger'
+import LoggerMock from '@test-common/mock.logger'
 jest.doMock('@common/model/Logger', () => LoggerMock)
 
-import { postsAllAdmin } from '@src/resolvers/wordpress/posts/postsAllAdmin'
+import { postsAllAdmin } from './postsAllAdmin'
 
 beforeEach(() => {
     jest.clearAllMocks()
@@ -27,7 +29,7 @@ describe('postsAllAdmin', () => {
         ;(Post.aggregate as jest.Mock).mockResolvedValue(fakePosts)
         ;(verifyAccessToken as jest.Mock).mockResolvedValue({ sub: { admin: true } })
 
-        const result = await postsAllAdmin(1, 'admin-token')
+        const result = await postsAllAdmin(1, 'admin-token', { setHeader: jest.fn() } as unknown as Response)
 
         expect(verifyAccessToken).toHaveBeenCalledWith('admin-token')
         expect(Post.aggregate).toHaveBeenCalled()
@@ -38,7 +40,7 @@ describe('postsAllAdmin', () => {
         ;(Post.aggregate as jest.Mock).mockResolvedValue([])
         ;(verifyAccessToken as jest.Mock).mockResolvedValue({ admin: true })
 
-        expect(await postsAllAdmin(1, 'admin-token')).toStrictEqual([])
+        expect(await postsAllAdmin(1, 'admin-token', { setHeader: jest.fn() } as unknown as Response)).toStrictEqual([])
         expect(verifyAccessToken).toHaveBeenCalled()
     })
 })

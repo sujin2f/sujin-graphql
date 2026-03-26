@@ -11,9 +11,6 @@ query {
     postsAdmin(slug: "?", page: 1) {
         title
     }
-    postsAllAdmin(page: 1) {
-        title
-    }
     search(keyword: "?", page: 1) {
         items {
             title

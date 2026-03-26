@@ -12,9 +12,12 @@
         "paths": {
             "@test/*": ["./.jest/*"],
             "@src/*": ["./src/*"],
-            "@common/*": ["./common/src/*"]
-        }
+            "@worker/*": ["./worker/*"],
+            "@common/*": ["./common/src/*"],
+            "@test-common/*": ["./common/.jest/*"]
+        },
+        "types": ["jest", "node"]
     },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "./common/**/*"]
+    "include": ["src/**/*.ts", "worker/**/*.ts", ".jest/**/*.ts"],
+    "exclude": ["node_modules", "common/**/*"]
 }
