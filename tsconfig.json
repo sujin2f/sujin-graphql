@@ -13,8 +13,10 @@
             "@test/*": ["./.jest/*"],
             "@src/*": ["./src/*"],
             "@worker/*": ["./worker/*"],
-            "@common/*": ["./common/src/*"]
-        }
+            "@common/*": ["./common/src/*"],
+            "@test-common/*": ["./common/.jest/*"]
+        },
+        "types": ["jest", "node"]
     },
     "include": ["src/**/*.ts", "worker/**/*.ts", ".jest/**/*.ts"],
     "exclude": ["node_modules", "common/**/*"]
