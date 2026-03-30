@@ -10,7 +10,7 @@ import { getTokenSub, generateToken } from '@common/utils/token'
 /* T_Type */
 import type { T_GoogleUser, T_User } from '@common/types'
 import type { Response } from '@src/types'
-import { ACCESS_TOKEN_LIFETIME, HEADER_TOKEN, REFRESH_TOKEN_LIFETIME } from '@common/constants'
+import { ACCESS_TOKEN_LIFETIME, HEADER_PREFIX, HEADER_TOKEN, REFRESH_TOKEN_LIFETIME } from '@common/constants'
 
 const ACCESS_SECRET = `${process.env.ACCESS_SECRET}`
 const REFRESH_SECRET = `${process.env.REFRESH_SECRET}`
@@ -88,7 +88,7 @@ export const login = async (googleUser: T_GoogleUser, token: string, res: Respon
         CRYPTO_KEY,
     )
 
-    res.setHeader(HEADER_TOKEN, `Bearer ${commToken}`)
+    res.setHeader(HEADER_TOKEN, `${HEADER_PREFIX}${commToken}`)
 
     Logger.info(`login() has been finished: ${JSON.stringify(mongoUser)}`)
     return true

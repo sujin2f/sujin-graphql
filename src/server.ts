@@ -16,7 +16,7 @@ import { Mutation, Query } from '@src/resolvers'
 import { typeDefs } from '@src/resolvers/typeDefs'
 
 import { IS_DEV } from '@common/constants/helper'
-import { HEADER_TOKEN } from '@common/constants'
+import { HEADER_PREFIX, HEADER_TOKEN } from '@common/constants'
 
 // Resolvers define how to fetch the types defined in your schema.
 // This resolver retrieves books from the "books" array above.
@@ -46,10 +46,10 @@ const corsOptions = {
 
 const authenticateUser = (req: express.Request): string => {
     const authorizationHeader = req.headers[HEADER_TOKEN]
-    if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+    if (!authorizationHeader || !authorizationHeader.startsWith(HEADER_PREFIX)) {
         return ''
     }
-    return authorizationHeader.replace('Bearer ', '')
+    return authorizationHeader.replace(HEADER_PREFIX, '')
 }
 
 const start = async () => {
